@@ -1,0 +1,87 @@
+---
+title: "국립환경인재개발원"
+subtitle: "대구대학교"
+author: "권태용"
+date: "2023.11.06~08"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: center
+layout: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 10)
+library(highcharter)
+library(dplyr)
+library(palmerpenguins)
+library(ggplot2)
+
+data(penguins, package = "palmerpenguins")
+data(diamonds, economics_long, package = "ggplot2")
+
+penguins2 <- penguins %>%
+  count(species, island) %>%
+  glimpse()
+
+economics_long2 <- economics_long %>%
+  filter(variable %in% c("pop", "uempmed", "unemploy"))
+```
+## scatter
+```{r}
+hchart(penguins, "scatter", hcaes(x = body_mass_g, y = flipper_length_mm , group = species))
+
+```
+
+---
+## bar
+```{r}
+hchart(penguins2, "column", hcaes(x = island, y = n, group = species))
+
+```
+
+---
+## line
+```{r}
+hchart(economics_long2, "line", hcaes(x = date, y = value01, group = variable))
+
+```
+
+---
+## etc
+```{r}
+
+library(gganimate)
+library(gapminder)
+library(plotly)
+library(leaflet)
+
+theme_set(theme_bw())
+
+fig <- gapminder %>%
+  plot_ly(
+    x = ~gdpPercap, 
+    y = ~lifeExp, 
+    size = ~pop, 
+    color = ~continent, 
+    frame = ~year, 
+    text = ~country, 
+    hoverinfo = "text",
+    type = 'scatter',
+    mode = 'markers'
+  )
+fig <- fig %>% layout(
+  xaxis = list(
+    type = "log"
+  )
+)
+
+fig
+
+```
+
+
